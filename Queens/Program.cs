@@ -1,24 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace Queens
 {
     class Program
     {
-        private const int DEFAULTSIZE = 14;
+        private const int Defaultsize = 14;
 
-        static void Main(string[] args)
+        static void Main()
         {
-            Console.WriteLine($"Input size, if blank it will be {DEFAULTSIZE}");
+            Console.WriteLine($"Input size, if blank it will be {Defaultsize}");
 
             int size;
 
             if (!int.TryParse(Console.ReadLine(), out size))
             {
-                size = DEFAULTSIZE;
+                size = Defaultsize;
             }
 
             Threaded(size);

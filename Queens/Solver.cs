@@ -36,13 +36,9 @@ namespace Queens
                     {
                         solutions = Backtrack(row + 1, positions, solutions);
                     }
-                    else
-                    {
-
-                    }
                 }
             }
-            
+
             return solutions;
         }
 
