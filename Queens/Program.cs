@@ -19,25 +19,26 @@ namespace Queens
                 size = Defaultsize;
             }
 
+            //Don't know of a better way than .wait for console application.
             Console.WriteLine("--------------------------------------------");
             SmarterNotThreaded(size);
-            SmarterThreaded(size);
+            Task.Run(() => SmarterThreaded(size)).Wait();
             Console.WriteLine("--------------------------------------------");
-            Threaded(size);
+            Task.Run(() => Threaded(size)).Wait();
             NotThreaded(size);
             //Uncomment to run, takes some more memory and cpu usage
-            //ProducerConsumerMethod(size);
+           // Task.Run(() => ProducerConsumerMethod(size)).Wait();
 
             Console.ReadLine();
         }
 
-        private static void ProducerConsumerMethod(int sizes)
+        private static async Task ProducerConsumerMethod(int sizes)
         {
             ProducerConsumer pc = new ProducerConsumer();
             int solutions;
             System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
             watch.Start();
-            solutions = pc.Start(nrConsumers: 4, size: sizes);
+            solutions = await pc.Start(nrConsumers: 4, size: sizes);
 
             watch.Stop();
 
@@ -47,7 +48,7 @@ namespace Queens
             Console.WriteLine($"Elapsed milliseconds {elapsedMs}");
         }
 
-        private static void SmarterThreaded(int size)
+        private static async Task SmarterThreaded(int size)
         {
             var taskPositions = new int[size][];
             int solutions;
@@ -65,7 +66,7 @@ namespace Queens
 
             tList = taskPositions.Select((t, i) => i).Select(i1 => s.SolveThreaded(1, taskPositions[i1])).Cast<Task>().ToArray();
 
-            Task.WaitAll(tList);
+            await Task.WhenAll(tList);
             solutions = tList.Sum(task => ((Task<int>)task).Result);
 
             watch.Stop();
@@ -94,7 +95,7 @@ namespace Queens
             Console.WriteLine($"Elapsed milliseconds {elapsedMs}");
         }
 
-        private static void Threaded(int size)
+        private static async Task Threaded(int size)
         {
             var taskPositions = new int[size][];
             int solutions;
@@ -112,7 +113,7 @@ namespace Queens
 
             tList = taskPositions.Select((t, i) => i).Select(i1 => s.SolveThreaded(1, taskPositions[i1])).Cast<Task>().ToArray();
 
-            Task.WaitAll(tList);
+            await Task.WhenAll(tList);
             solutions = tList.Sum(task => ((Task<int>)task).Result);
 
             watch.Stop();

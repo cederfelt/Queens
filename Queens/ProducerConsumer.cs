@@ -24,7 +24,7 @@ namespace Queens
             _cons = new Consumer(proposals);
         }
 
-        public int Start(int nrProducers = 1, int nrConsumers = 1, int size = 8)
+        public async Task<int> Start(int nrProducers = 1, int nrConsumers = 1, int size = 8)
         {
             Task[] consumerTask = new Task[nrProducers + nrConsumers];
             int i = 0;
@@ -42,7 +42,8 @@ namespace Queens
                 }
             }
 
-            Task.WaitAll(consumerTask);
+            await Task.WhenAll(consumerTask);
+            
             var solutions = consumerTask.Sum(task => ((Task<int>)task).Result);
 
             return solutions;
