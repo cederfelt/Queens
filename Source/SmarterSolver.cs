@@ -3,9 +3,8 @@ using System.Threading.Tasks;
 
 namespace Queens
 {
-    public class Solver
+    internal class SmarterSolver
     {
-
         public int SolveUnThreaded(int row, int[] positions)
         {
             int solutions = 0;
@@ -13,7 +12,7 @@ namespace Queens
             return solutions;
         }
 
-        public async Task<int> SolveThreaded(int row, int[] positions)
+        public async Task<int> SolveThreadedAsync(int row, int[] positions)
         {
             int solutions = 0;
             solutions = await Task.Run(() => Backtrack(row, positions, solutions));
@@ -24,21 +23,7 @@ namespace Queens
         {
             if (row == positions.Length)
             {
-                Boolean s = true;
-
-                for (int i = 0; i < positions.Length; i++)
-                {
-                    if (!IsValid(positions, i))
-                    {
-                        s = false;
-                        break;
-                    }
-                }
-                if (s)
-                {
-                    solutions++;
-                }
-
+                solutions++;
                 return solutions;
             }
             else
@@ -46,7 +31,10 @@ namespace Queens
                 for (int i = 0; i < positions.Length; i++)
                 {
                     positions[row] = i;
-                    solutions = Backtrack(row + 1, positions, solutions);
+                    if (IsValid(positions, row))
+                    {
+                        solutions = Backtrack(row + 1, positions, solutions);
+                    }
                 }
             }
 
@@ -57,8 +45,7 @@ namespace Queens
         {
             for (int j = 0; j < currentRow; j++)
             {
-                if (positions[j] == positions[currentRow] ||
-                    positions[j] == positions[currentRow] - (currentRow - j) ||
+                if (positions[j] == positions[currentRow] || positions[j] == positions[currentRow] - (currentRow - j) ||
                     positions[j] == positions[currentRow] + (currentRow - j))
                 {
                     return false;

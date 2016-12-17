@@ -3,8 +3,10 @@ using System.Threading.Tasks;
 
 namespace Queens
 {
-    class SmarterSolver
+    //Solves by bruteforce. Trying to place a queen in the first column for each row, checks if the board is valid, if not move a queen.
+    class BruteforceSolver
     {
+
         public int SolveUnThreaded(int row, int[] positions)
         {
             int solutions = 0;
@@ -12,7 +14,7 @@ namespace Queens
             return solutions;
         }
 
-        public async Task<int> SolveThreaded(int row, int[] positions)
+        public async Task<int> SolveThreadedAsync(int row, int[] positions)
         {
             int solutions = 0;
             solutions = await Task.Run(() => Backtrack(row, positions, solutions));
@@ -23,7 +25,21 @@ namespace Queens
         {
             if (row == positions.Length)
             {
-                solutions++;
+                Boolean validBoard = true;
+
+                for (int i = 0; i < positions.Length; i++)
+                {
+                    if (!IsValid(positions, i))
+                    {
+                        validBoard = false;
+                        break;
+                    }
+                }
+                if (validBoard)
+                {
+                    solutions++;
+                }
+
                 return solutions;
             }
             else
@@ -31,10 +47,7 @@ namespace Queens
                 for (int i = 0; i < positions.Length; i++)
                 {
                     positions[row] = i;
-                    if (IsValid(positions, row))
-                    {
-                        solutions = Backtrack(row + 1, positions, solutions);
-                    }
+                    solutions = Backtrack(row + 1, positions, solutions);
                 }
             }
 
@@ -45,7 +58,8 @@ namespace Queens
         {
             for (int j = 0; j < currentRow; j++)
             {
-                if (positions[j] == positions[currentRow] || positions[j] == positions[currentRow] - (currentRow - j) ||
+                if (positions[j] == positions[currentRow] ||
+                    positions[j] == positions[currentRow] - (currentRow - j) ||
                     positions[j] == positions[currentRow] + (currentRow - j))
                 {
                     return false;

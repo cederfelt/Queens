@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Queens.PC
 {
-    class Consumer
+    internal class Consumer
     {
         private ConcurrentQueue<int[]> proposals;
         public Consumer(ConcurrentQueue<int[]> queue)

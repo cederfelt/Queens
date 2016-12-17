@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Queens.PC
 {
-    class Producer
+    internal class Producer
     {
         private ConcurrentQueue<int[]> proposals;
 
@@ -13,7 +13,7 @@ namespace Queens.PC
             proposals = queue;
         }
 
-        public async Task<int> Start(int size, int consumers)
+        public async Task<int> StartAsync(int size, int consumers)
         {
             await Task.Run(() => Produce(size));
 

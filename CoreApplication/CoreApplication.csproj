@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="**\*.cs" />
+    <EmbeddedResource Include="**\*.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Source\BruteforceSolver.cs">
+      <Link>BruteforceSolver.cs</Link>
+    </Compile>
+    <Compile Include="..\Source\PC\Consumer.cs">
+      <Link>PC\Consumer.cs</Link>
+    </Compile>
+    <Compile Include="..\Source\PC\Producer.cs">
+      <Link>PC\Producer.cs</Link>
+    </Compile>
+    <Compile Include="..\Source\ProducerConsumerSolver.cs">
+      <Link>ProducerConsumerSolver.cs</Link>
+    </Compile>
+    <Compile Include="..\Source\Program.cs">
+      <Link>Program.cs</Link>
+    </Compile>
+    <Compile Include="..\Source\SmarterSolver.cs">
+      <Link>SmarterSolver.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETCore.App" Version="1.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PC\" />
+  </ItemGroup>
+</Project>
